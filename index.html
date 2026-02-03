@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Метаанализ: 2-групповой и одногрупповой</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>Калькулятор метаанализа</h1>
+    <p>Двухгрупповой (RR, случайные эффекты DerSimonian–Laird) и одногрупповой (Freeman–Tukey) анализ.</p>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Анализ 1. Эффективность лечения (двухгрупповой, RR)</h2>
+      <div class="grid">
+        <div>
+          <label for="twoGroupData" class="label">Данные (Study, a, n1, c, n0)</label>
+          <textarea id="twoGroupData" rows="12"></textarea>
+          <p class="hint">Разделитель — таб, запятая или точка с запятой. В названии исследования запятые не рекомендуются.</p>
+        </div>
+        <div>
+          <div class="result-box" id="twoGroupSummary"></div>
+          <div class="forest" id="twoGroupForest"></div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="twoGroupTable">
+          <thead>
+            <tr>
+              <th>Исследование</th>
+              <th>ОГ (a/n1)</th>
+              <th>КГ (c/n0)</th>
+              <th>RR</th>
+              <th>95% ДИ</th>
+              <th>Вес, %</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="note">
+        <h3>Примечания</h3>
+        <ul>
+          <li>Использована модель случайных эффектов DerSimonian–Laird (DL).</li>
+          <li>Не применялись: коррекция нулевых ячеек, Hartung–Knapp, REML, Paule–Mandel.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Анализ 2. Частота рецидивов (одногрупповой, Freeman–Tukey)</h2>
+      <div class="grid">
+        <div>
+          <label for="oneGroupData" class="label">Данные (Study, x, n, subgroup?)</label>
+          <textarea id="oneGroupData" rows="14"></textarea>
+          <div class="controls">
+            <label><input type="checkbox" id="sensitivityToggle" /> Чувствительный анализ: endTB-Q «минус 1 событие»</label>
+          </div>
+          <p class="hint">Последний столбец можно использовать для подгруппы (например, «6-9 мес», «9-12 мес»).</p>
+        </div>
+        <div>
+          <div class="result-box" id="oneGroupSummary"></div>
+          <div class="forest" id="oneGroupForest"></div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="oneGroupTable">
+          <thead>
+            <tr>
+              <th>Исследование</th>
+              <th>Рецидивы/Всего</th>
+              <th>Доля</th>
+              <th>95% ДИ</th>
+              <th>Подгруппа</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <button id="recalcBtn">Пересчитать</button>
+    <p>Поддерживаются только введённые выше формулы и спецификации расчётов.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
