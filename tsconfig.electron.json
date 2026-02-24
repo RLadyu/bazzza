@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "dist-electron",
+    "noEmit": false
+  },
+  "include": ["src/main/**/*.ts", "src/contracts/**/*.ts", "src/db/**/*.ts"]
+}
