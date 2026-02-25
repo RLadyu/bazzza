@@ -15,17 +15,17 @@
     "test:migrations": "node --test tests/migrations.test.mjs"
   },
   "dependencies": {
-    "better-sqlite3": "^9.6.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.28.1",
+    "sql.js": "^1.13.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.12",
     "@types/node": "^22.10.2",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
+    "@types/sql.js": "^1.4.9",
     "@typescript-eslint/eslint-plugin": "^8.18.2",
     "@typescript-eslint/parser": "^8.18.2",
     "@vitejs/plugin-react": "^4.3.4",
@@ -56,6 +56,9 @@
       "target": [
         "dir"
       ]
-    }
+    },
+    "extraResources": [
+      "node_modules/sql.js/dist/sql-wasm.wasm"
+    ]
   }
 }

@@ -3,7 +3,7 @@
 ## 1) Product constraints
 - Platform: Windows desktop app (`.exe`) without installer and without admin rights.
 - Runtime mode: fully offline, no network requests from renderer/main processes.
-- Architecture stack: Electron + Vite + React + TypeScript + SQLite.
+- Architecture stack: Electron + Vite + React + TypeScript + SQLite (`sql.js` WASM runtime).
 
 ## 2) Immutable data layers
 1. **RAW** — immutable source capture, 1:1 representation of imported files.
@@ -127,3 +127,10 @@ This applies for Excel/CSV imports (CSV is represented as one logical sheet with
 - Breakdown table groups resolved rows by `cohort_kind` and `region` with row/patient counts.
 - Data quality block returns top-10 CANON fields by missingness in resolved values (`null`/empty treated as missing).
 - Analytics CSV export writes aggregate report sections (overview, breakdown, missingness) and does not mutate source data.
+
+
+## 18) SQLite runtime
+- The app uses `sql.js` (WASM SQLite) in the main process instead of native SQLite bindings.
+- Motivation: avoid native build dependencies during `npm install` (no `node-gyp` toolchain requirement).
+- DB file persistence remains local: database bytes are loaded from configured path and flushed back to disk after writes.
+- Existing SQL schema/migrations are unchanged and executed as before.

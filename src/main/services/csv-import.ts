@@ -2,7 +2,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import readline from "node:readline";
-import type Database from "better-sqlite3";
+import type { DbClient } from "../../db/client";
 import { getAppDataDir } from "../../db/path";
 import type { RunCsvImportRequest, RunCsvImportResponse } from "../../contracts/ipc";
 
@@ -122,7 +122,7 @@ async function scanFile(filePath: string, delimiter: string): Promise<ScanResult
   }
 }
 
-export async function runCsvImport(db: Database.Database, request: RunCsvImportRequest): Promise<RunCsvImportResponse> {
+export async function runCsvImport(db: DbClient, request: RunCsvImportRequest): Promise<RunCsvImportResponse> {
   const ext = fileExt(request.filePath);
   ensureSupportedExtension(ext);
 

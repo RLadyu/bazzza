@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import type Database from "better-sqlite3";
+import type { DbClient } from "./client";
 
 export interface Migration {
   id: string;
@@ -16,7 +16,7 @@ function loadMigration(fileName: string): Migration {
 
 export const MIGRATIONS: Migration[] = [loadMigration("001_initial.sql"), loadMigration("002_manual_rows.sql"), loadMigration("003_mapping_templates.sql"), loadMigration("004_imports_mapping_template.sql")];
 
-export function applyMigrations(db: Database.Database): void {
+export function applyMigrations(db: DbClient): void {
   db.exec(`
     CREATE TABLE IF NOT EXISTS schema_migrations (
       id TEXT PRIMARY KEY,

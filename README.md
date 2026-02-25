@@ -2,6 +2,8 @@
 
 Offline desktop scaffold on Electron + Vite + React + TypeScript.
 
+Storage engine: SQLite via **sql.js (WASM)** (no native module compilation required).
+
 ## Screens (stubs)
 - Imports
 - Mappings
@@ -49,3 +51,8 @@ Offline desktop scaffold on Electron + Vite + React + TypeScript.
 1. **Settings → База данных**: check current DB path/info, create backup.
 2. **Imports → Mappings → Cohorts**: import data, apply mappings, verify cohort list.
 3. **Аналитика**: KPI cards, breakdown table, missingness top-10, CSV report export.
+
+
+## Why sql.js
+- Uses pure JS/WASM SQLite runtime, so `npm install` does not need native compilation toolchain.
+- Avoids `node-gyp`/`distutils` issues common with native SQLite drivers on fresh Windows setups (Node v24 + Python 3.12).
