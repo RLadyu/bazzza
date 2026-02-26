@@ -1,0 +1,34 @@
+body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  background: #f3f4f8;
+  color: #172033;
+}
+
+main {
+  max-width: 980px;
+  margin: 24px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+}
+
+nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 16px 0 24px;
+}
+
+a {
+  text-decoration: none;
+  color: #264fda;
+  border: 1px solid #264fda;
+  border-radius: 999px;
+  padding: 6px 12px;
+}
+
+a.active {
+  background: #264fda;
+  color: #fff;
+}
