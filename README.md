@@ -7,7 +7,7 @@
 - `index.html` — каркас страницы, заголовок, легенда, контейнер SVG.
 - `styles.css` — презентационный стиль схемы, состояния hover/focus/dim.
 - `graph-data.js` — данные онтологии (`nodes`, `edges`, `group`, `parent`, `children`, `level`).
-- `app.js` — layout, рендер узлов/рёбер, интерактивность (focus, expand/collapse, reset).
+- `app.js` — layout, рендер узлов/рёбер, интерактивность (focus, expand/collapse, reset по клику в пустую область).
 
 ## Запуск локально
 

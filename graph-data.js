@@ -97,19 +97,28 @@ const HIERARCHY_EDGES = NODES.filter((n) => n.parent).map((n) => ({
 const SEMANTIC_EDGES = [
   ["mld_tb", "h"], ["mld_tb", "r"], ["mld_tb", "regimens"], ["mld_tb", "diagnostics"],
   ["regimens", "drugs"], ["regimens", "fq_res"], ["regimens", "logic_profile"],
+
+  ["reg_bpalm", "drug_bdq"], ["reg_bpalm", "drug_pa"], ["reg_bpalm", "drug_lzd"], ["reg_bpalm", "drug_mfx"],
+  ["reg_6", "drug_bdq"], ["reg_6", "drug_lzd"], ["reg_6", "drug_mfx"], ["reg_6", "drug_cfz"],
+  ["reg_9", "drug_lfx"], ["reg_9", "drug_cfz"], ["reg_9", "drug_cs"], ["reg_9", "drug_z"],
+  ["reg_18_20", "drug_lfx"], ["reg_18_20", "drug_cs"], ["reg_18_20", "drug_e"], ["reg_18_20", "drug_pas"], ["reg_18_20", "drug_pto"],
+
   ["drug_bdq", "risk_qtc"], ["drug_bdq", "ctrl_ecg"],
-  ["drug_lzd", "risk_myelo"], ["drug_lzd", "risk_periph"], ["drug_lzd", "ctrl_oak"], ["drug_lzd", "ctrl_neuro"],
+  ["drug_lzd", "risk_myelo"], ["drug_lzd", "risk_periph"], ["drug_lzd", "risk_optic"], ["drug_lzd", "ctrl_oak"], ["drug_lzd", "ctrl_neuro"],
   ["drug_cfz", "risk_qtc"], ["drug_cfz", "ctrl_ecg"],
-  ["drug_cs", "risk_psy"],
-  ["fq_res", "risk_qtc"],
+  ["drug_cs", "risk_psy"], ["drug_cs", "risk_neuro"],
+  ["drug_dlm", "risk_qtc"], ["drug_mfx", "risk_qtc"], ["drug_lfx", "risk_qtc"],
   ["drug_pa", "risk_hepato"], ["drug_z", "risk_hepato"], ["drug_pto", "risk_hepato"], ["drug_pas", "risk_hepato"],
-  ["risk_hepato", "ctrl_lft"],
+
+  ["fq_res", "risk_qtc"],
+  ["risk_hepato", "ctrl_lft"], ["risk_hepato", "ctrl_creat"],
   ["risk_electro", "ctrl_kmgca"], ["risk_electro", "ctrl_ecg"],
   ["risk_qtc", "ctrl_ecg"], ["risk_myelo", "ctrl_oak"], ["risk_neuro", "ctrl_neuro"],
-  ["risk_optic", "ctrl_opht"], ["risk_psy", "ctrl_neuro"],
-  ["drug_dlm", "risk_qtc"], ["drug_mfx", "risk_qtc"], ["drug_lfx", "risk_qtc"],
+  ["risk_optic", "ctrl_opht"], ["risk_psy", "ctrl_neuro"], ["risk_periph", "ctrl_neuro"],
+
   ["diag_electro", "ctrl_kmgca"], ["diag_ecg", "ctrl_ecg"], ["diag_biochem", "ctrl_lft"],
   ["diag_cbc", "ctrl_oak"],
+
   ["h", "logic_mdr"], ["r", "logic_mdr"], ["fq_res", "logic_prexdr"], ["mld_tb", "logic_prexdr"],
   ["drugs", "logic_monitor"], ["risks", "logic_monitor"], ["control", "logic_monitor"]
 ].map(([source, target]) => ({ source, target, type: "semantic" }));

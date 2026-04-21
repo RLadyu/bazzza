@@ -2,7 +2,6 @@ const svg = document.getElementById("graph");
 const nodeLayer = document.getElementById("nodes");
 const hierarchyLayer = document.getElementById("edgesHierarchy");
 const semanticLayer = document.getElementById("edgesSemantic");
-const resetBtn = document.getElementById("resetBtn");
 const legendHost = document.getElementById("legend");
 
 const NODE_RADIUS = { 0: 52, 1: 34, 2: 23, 3: 20 };
@@ -51,11 +50,11 @@ GRAPH_DATA.nodes.forEach((node) => {
   }
 });
 
-const adjacency = new Map();
-GRAPH_DATA.nodes.forEach((n) => adjacency.set(n.id, new Set()));
-GRAPH_DATA.edges.forEach((edge) => {
-  adjacency.get(edge.source)?.add(edge.target);
-  adjacency.get(edge.target)?.add(edge.source);
+const semanticAdjacency = new Map();
+GRAPH_DATA.nodes.forEach((n) => semanticAdjacency.set(n.id, new Set()));
+GRAPH_DATA.edges.filter((e) => e.type === "semantic").forEach((edge) => {
+  semanticAdjacency.get(edge.source)?.add(edge.target);
+  semanticAdjacency.get(edge.target)?.add(edge.source);
 });
 
 function createLegend() {
@@ -93,12 +92,71 @@ function isVisible(nodeId) {
   return true;
 }
 
-function connectedComponent(nodeId) {
-  const set = new Set([nodeId]);
-  adjacency.get(nodeId)?.forEach((id) => {
-    if (isVisible(id)) set.add(id);
+function getAncestors(nodeId) {
+  const ancestors = [];
+  let current = nodesById.get(nodeId);
+  while (current?.parent) {
+    ancestors.push(current.parent);
+    current = nodesById.get(current.parent);
+  }
+  return ancestors;
+}
+
+function getDescendants(nodeId, collector = new Set()) {
+  const node = nodesById.get(nodeId);
+  if (!node) return collector;
+
+  node.children.forEach((childId) => {
+    collector.add(childId);
+    getDescendants(childId, collector);
   });
-  return set;
+  return collector;
+}
+
+function expandPathFor(nodeId) {
+  getAncestors(nodeId).forEach((ancestorId) => {
+    const ancestor = nodesById.get(ancestorId);
+    if (ancestor?.collapsible) {
+      state.expanded.add(ancestorId);
+    }
+  });
+
+  const node = nodesById.get(nodeId);
+  if (node?.collapsible) {
+    state.expanded.add(nodeId);
+  }
+}
+
+function clinicalFocus(nodeId) {
+  const visited = new Set([nodeId]);
+  const focus = new Set([nodeId]);
+  const queue = [{ id: nodeId, depth: 0 }];
+  const maxDepth = 3;
+
+  while (queue.length) {
+    const current = queue.shift();
+    const node = nodesById.get(current.id);
+    if (!node) continue;
+
+    getAncestors(current.id).forEach((ancestorId) => focus.add(ancestorId));
+    getDescendants(current.id).forEach((descId) => focus.add(descId));
+
+    if (current.depth >= maxDepth) continue;
+    semanticAdjacency.get(current.id)?.forEach((neighborId) => {
+      if (!visited.has(neighborId)) {
+        visited.add(neighborId);
+        queue.push({ id: neighborId, depth: current.depth + 1 });
+      }
+      focus.add(neighborId);
+
+      getAncestors(neighborId).forEach((ancestorId) => focus.add(ancestorId));
+      if (current.depth <= 1) {
+        getDescendants(neighborId).forEach((descId) => focus.add(descId));
+      }
+    });
+  }
+
+  return new Set([...focus].filter((id) => isVisible(id)));
 }
 
 function render() {
@@ -108,7 +166,7 @@ function render() {
 
   const visibleNodes = GRAPH_DATA.nodes.filter((node) => isVisible(node.id));
   const visibleSet = new Set(visibleNodes.map((n) => n.id));
-  const focusSet = state.focusedNodeId ? connectedComponent(state.focusedNodeId) : null;
+  const focusSet = state.focusedNodeId ? clinicalFocus(state.focusedNodeId) : null;
 
   GRAPH_DATA.edges.forEach((edge) => {
     if (!visibleSet.has(edge.source) || !visibleSet.has(edge.target)) return;
@@ -151,7 +209,6 @@ function render() {
     text.setAttribute("y", y);
 
     const lines = node.label.split("\n");
-    const lineHeight = node.level >= 2 ? 13 : 16;
     lines.forEach((line, idx) => {
       const tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
       tspan.setAttribute("x", x);
@@ -162,15 +219,20 @@ function render() {
 
     g.append(circle, text);
 
-    g.addEventListener("click", () => {
+    g.addEventListener("click", (event) => {
+      event.stopPropagation();
       const clickingFocused = state.focusedNodeId === node.id;
-      if (node.collapsible) {
+
+      if (node.collapsible && clickingFocused) {
         if (state.expanded.has(node.id)) {
           state.expanded.delete(node.id);
         } else {
           state.expanded.add(node.id);
         }
+      } else {
+        expandPathFor(node.id);
       }
+
       state.focusedNodeId = clickingFocused ? null : node.id;
       render();
     });
@@ -179,11 +241,8 @@ function render() {
   });
 }
 
-resetBtn.addEventListener("click", () => {
+svg.addEventListener("click", () => {
   state.focusedNodeId = null;
-  state.expanded = new Set(
-    GRAPH_DATA.nodes.filter((n) => n.collapsible && n.defaultExpanded).map((n) => n.id)
-  );
   render();
 });
 

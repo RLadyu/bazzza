@@ -26,7 +26,6 @@ body {
 
 .page__header {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
   gap: 16px;
 }
@@ -41,23 +40,6 @@ h1 {
   margin: 10px 0 0;
   color: var(--muted);
   font-size: 15px;
-}
-
-.reset-btn {
-  border: 1px solid #b8c5d8;
-  background: white;
-  color: #284261;
-  border-radius: 10px;
-  padding: 10px 18px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.reset-btn:hover {
-  border-color: #8ea4c2;
-  transform: translateY(-1px);
 }
 
 .legend {
@@ -182,11 +164,6 @@ h1 {
   stroke: #0f315f;
   stroke-width: 4px;
   filter: brightness(1.08);
-}
-
-.node.hidden {
-  opacity: 0;
-  pointer-events: none;
 }
 
 @media (max-width: 1200px) {
