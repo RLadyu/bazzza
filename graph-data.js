@@ -5,8 +5,7 @@ const GROUP_COLORS = {
   meds: "#5d68d9",
   risks: "#d79a2f",
   control: "#2491a8",
-  diagnostics: "#2f9a60",
-  logic: "#6d7e95"
+  diagnostics: "#2f9a60"
 };
 
 const LEGEND = [
@@ -16,8 +15,7 @@ const LEGEND = [
   { group: "meds", label: "Препараты" },
   { group: "risks", label: "Риски / НЯ" },
   { group: "control", label: "Контроль + кратность" },
-  { group: "diagnostics", label: "Обследования" },
-  { group: "logic", label: "Логические выводы" }
+  { group: "diagnostics", label: "Обследования" }
 ];
 
 const NODES = [
@@ -53,7 +51,7 @@ const NODES = [
   { id: "risk_myelo", label: "миелотоксичность", group: "risks", level: 2, parent: "risks" },
   { id: "risk_neuro", label: "нейротоксичность", group: "risks", level: 2, parent: "risks" },
   { id: "risk_hepato", label: "гепатотоксичность", group: "risks", level: 2, parent: "risks" },
-  { id: "risk_periph", label: "периферическая\nнейропатия", group: "risks", level: 2, parent: "risks" },
+  { id: "risk_periph", label: "периферич.\nнейропатия", group: "risks", level: 2, parent: "risks" },
   { id: "risk_optic", label: "неврит\nзрительного нерва", group: "risks", level: 2, parent: "risks" },
   { id: "risk_psy", label: "психоневро-\nлогические реакции", group: "risks", level: 2, parent: "risks" },
   { id: "risk_electro", label: "электролитные\nнарушения", group: "risks", level: 2, parent: "risks" },
@@ -83,50 +81,29 @@ const NODES = [
   { id: "diag_cbc", label: "общий анализ\nкрови", group: "diagnostics", level: 2, parent: "diagnostics" },
   { id: "diag_biochem", label: "биохимия\nкрови", group: "diagnostics", level: 2, parent: "diagnostics" },
   { id: "diag_electro", label: "электролиты", group: "diagnostics", level: 2, parent: "diagnostics" },
-  { id: "diag_ecg", label: "ЭКГ", group: "diagnostics", level: 2, parent: "diagnostics" },
-
-  { id: "logic", label: "логические выводы", group: "logic", level: 1, parent: "mld_tb", collapsible: false },
-  { id: "logic_mdr", label: "H + R → МЛУ-ТБ", group: "logic", level: 2, parent: "logic" },
-  { id: "logic_prexdr", label: "МЛУ-ТБ + Fq-устойчивость\n→ пре-ШЛУ-ТБ", group: "logic", level: 2, parent: "logic" },
-  { id: "logic_profile", label: "режим зависит\nот профиля устойчивости", group: "logic", level: 2, parent: "logic" },
-  { id: "logic_monitor", label: "контроль зависит\nот препарата и риска", group: "logic", level: 2, parent: "logic" }
+  { id: "diag_ecg", label: "ЭКГ", group: "diagnostics", level: 2, parent: "diagnostics" }
 ];
 
-const HIERARCHY_EDGES = NODES.filter((n) => n.parent).map((n) => ({
-  source: n.parent,
-  target: n.id,
-  type: "hierarchy"
-}));
+const HIERARCHY_EDGES = NODES.filter((n) => n.parent).map((n) => ({ source: n.parent, target: n.id, type: "hierarchy" }));
 
 const SEMANTIC_EDGES = [
   ["mld_tb", "h"], ["mld_tb", "r"], ["mld_tb", "regimens"], ["mld_tb", "diagnostics"],
-  ["regimens", "drugs"], ["regimens", "fq_res"], ["regimens", "logic_profile"],
-
+  ["regimens", "drugs"], ["regimens", "fq_res"],
   ["reg_bpalm", "drug_bdq"], ["reg_bpalm", "drug_pa"], ["reg_bpalm", "drug_lzd"], ["reg_bpalm", "drug_mfx"],
   ["reg_6", "drug_bdq"], ["reg_6", "drug_lzd"], ["reg_6", "drug_mfx"], ["reg_6", "drug_cfz"],
   ["reg_9", "drug_lfx"], ["reg_9", "drug_cfz"], ["reg_9", "drug_cs"], ["reg_9", "drug_z"],
   ["reg_18_20", "drug_lfx"], ["reg_18_20", "drug_cs"], ["reg_18_20", "drug_e"], ["reg_18_20", "drug_pas"], ["reg_18_20", "drug_pto"],
 
-  ["drug_bdq", "risk_qtc"], ["drug_bdq", "ctrl_ecg"],
-  ["drug_lzd", "risk_myelo"], ["drug_lzd", "risk_periph"], ["drug_lzd", "risk_optic"], ["drug_lzd", "ctrl_oak"], ["drug_lzd", "ctrl_neuro"],
-  ["drug_cfz", "risk_qtc"], ["drug_cfz", "ctrl_ecg"],
-  ["drug_cs", "risk_psy"], ["drug_cs", "risk_neuro"],
+  ["drug_bdq", "risk_qtc"], ["drug_lzd", "risk_myelo"], ["drug_lzd", "risk_periph"], ["drug_lzd", "risk_optic"],
+  ["drug_cfz", "risk_qtc"], ["drug_cs", "risk_psy"], ["drug_cs", "risk_neuro"],
   ["drug_dlm", "risk_qtc"], ["drug_mfx", "risk_qtc"], ["drug_lfx", "risk_qtc"],
   ["drug_pa", "risk_hepato"], ["drug_z", "risk_hepato"], ["drug_pto", "risk_hepato"], ["drug_pas", "risk_hepato"], ["drug_e", "risk_optic"],
 
-  ["fq_res", "risk_qtc"],
-  ["risk_hepato", "ctrl_lft"], ["risk_hepato", "ctrl_creat"],
+  ["risk_qtc", "ctrl_ecg"], ["risk_myelo", "ctrl_oak"], ["risk_neuro", "ctrl_neuro"], ["risk_hepato", "ctrl_lft"],
+  ["risk_hepato", "ctrl_creat"], ["risk_periph", "ctrl_neuro"], ["risk_optic", "ctrl_opht"], ["risk_psy", "ctrl_neuro"],
   ["risk_electro", "ctrl_kmgca"], ["risk_electro", "ctrl_ecg"],
-  ["risk_qtc", "ctrl_ecg"], ["risk_myelo", "ctrl_oak"], ["risk_neuro", "ctrl_neuro"],
-  ["risk_optic", "ctrl_opht"], ["risk_psy", "ctrl_neuro"], ["risk_periph", "ctrl_neuro"],
 
-  ["ctrl_ecg", "diag_ecg"], ["ctrl_oak", "diag_cbc"], ["ctrl_lft", "diag_biochem"], ["ctrl_kmgca", "diag_electro"],
-
-  ["h", "logic_mdr"], ["r", "logic_mdr"], ["fq_res", "logic_prexdr"], ["mld_tb", "logic_prexdr"],
-  ["drugs", "logic_monitor"], ["risks", "logic_monitor"], ["control", "logic_monitor"]
+  ["ctrl_ecg", "diag_ecg"], ["ctrl_oak", "diag_cbc"], ["ctrl_lft", "diag_biochem"], ["ctrl_kmgca", "diag_electro"]
 ].map(([source, target]) => ({ source, target, type: "semantic" }));
 
-const GRAPH_DATA = {
-  nodes: NODES,
-  edges: [...HIERARCHY_EDGES, ...SEMANTIC_EDGES]
-};
+const GRAPH_DATA = { nodes: NODES, edges: [...HIERARCHY_EDGES, ...SEMANTIC_EDGES] };

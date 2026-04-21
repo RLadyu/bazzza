@@ -7,7 +7,7 @@ const relationLegendHost = document.getElementById("relationLegend");
 
 
 const RELATION_LEGEND = [
-  { cls: "rel-definition", label: "Определение / логика МЛУ-ТБ" },
+  { cls: "rel-definition", label: "Базовые связи МЛУ-ТБ" },
   { cls: "rel-regimen-drug", label: "Режим ↔ препараты" },
   { cls: "rel-drug-risk", label: "Препарат ↔ риск/НЯ" },
   { cls: "rel-risk-control", label: "Риск/НЯ ↔ контроль" },
@@ -30,26 +30,23 @@ const layout = {
   drug_z: [1300, 235], drug_e: [1380, 235], drug_pas: [1140, 320], drug_pto: [1300, 320],
 
   risks: [1260, 430],
-  risk_qtc: [1080, 390], risk_myelo: [1180, 390], risk_neuro: [1280, 390], risk_hepato: [1380, 390],
-  risk_periph: [1080, 470], risk_optic: [1180, 470], risk_psy: [1280, 470], risk_electro: [1380, 470],
+  risk_qtc: [1040, 390], risk_myelo: [1180, 390], risk_neuro: [1320, 390], risk_hepato: [1460, 390],
+  risk_periph: [1040, 485], risk_optic: [1180, 485], risk_psy: [1320, 485], risk_electro: [1460, 485],
 
   control: [1260, 665],
-  ctrl_ecg: [1060, 620], freq_ecg: [980, 620],
-  ctrl_oak: [1140, 620], freq_oak: [1065, 655],
-  ctrl_lft: [1220, 620], freq_lft: [1220, 675],
-  ctrl_creat: [1300, 620],
-  ctrl_kmgca: [1380, 620], freq_kmgca: [1460, 620],
-  ctrl_tsh: [1060, 700],
-  ctrl_neuro: [1140, 700], freq_neuro: [1220, 740],
-  ctrl_opht: [1220, 700], freq_opht: [1300, 740],
-  ctrl_audio: [1300, 700],
+  ctrl_ecg: [1020, 620], freq_ecg: [930, 620],
+  ctrl_oak: [1140, 620], freq_oak: [1060, 660],
+  ctrl_lft: [1260, 620], freq_lft: [1260, 680],
+  ctrl_creat: [1380, 620],
+  ctrl_kmgca: [1500, 620], freq_kmgca: [1580, 620],
+  ctrl_tsh: [1020, 705],
+  ctrl_neuro: [1140, 705], freq_neuro: [1230, 750],
+  ctrl_opht: [1260, 705], freq_opht: [1350, 750],
+  ctrl_audio: [1380, 705],
 
-  diagnostics: [820, 770],
-  diag_smear: [610, 730], diag_culture: [690, 730], diag_pcr: [770, 730], diag_ct: [850, 730],
-  diag_cbc: [930, 730], diag_biochem: [1010, 730], diag_electro: [1090, 730], diag_ecg: [1170, 730],
-
-  logic: [300, 680],
-  logic_mdr: [120, 620], logic_prexdr: [120, 710], logic_profile: [300, 620], logic_monitor: [300, 710]
+  diagnostics: [860, 780],
+  diag_smear: [650, 740], diag_culture: [740, 740], diag_pcr: [830, 740], diag_ct: [920, 740],
+  diag_cbc: [1010, 740], diag_biochem: [1100, 740], diag_electro: [1190, 740], diag_ecg: [1280, 740],
 };
 
 const state = {
@@ -114,7 +111,6 @@ function edgePath(from, to, type, sourceId, targetId) {
 
 
 function relationClass(edge) {
-  const pair = `${edge.source}->${edge.target}`;
   const source = edge.source;
   const target = edge.target;
 
@@ -131,7 +127,7 @@ function relationClass(edge) {
   if ((has("reg_", source) && has("drug_", target)) || (has("drug_", source) && has("reg_", target))) {
     return "rel-regimen-drug";
   }
-  if (pair.includes("logic") || source === "mld_tb" || target === "mld_tb" || source === "h" || source === "r" || target === "h" || target === "r") {
+  if (source === "mld_tb" || target === "mld_tb" || source === "h" || source === "r" || target === "h" || target === "r") {
     return "rel-definition";
   }
   return "rel-cross";
