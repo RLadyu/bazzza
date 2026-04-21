@@ -15,7 +15,7 @@ const LEGEND = [
   { group: "treatment", label: "Режимы лечения" },
   { group: "meds", label: "Препараты" },
   { group: "risks", label: "Риски / НЯ" },
-  { group: "control", label: "Контроль" },
+  { group: "control", label: "Контроль + кратность" },
   { group: "diagnostics", label: "Обследования" },
   { group: "logic", label: "Логические выводы" }
 ];
@@ -23,12 +23,10 @@ const LEGEND = [
 const NODES = [
   { id: "mld_tb", label: "МЛУ-ТБ", group: "core", level: 0 },
 
-  { id: "resistance", label: "ТЛЧ / устойчивость", group: "resistance", level: 1, parent: "mld_tb", collapsible: false },
+  { id: "resistance", label: "ТЛЧ / устойчивость", group: "resistance", level: 1, parent: "mld_tb", collapsible: true, defaultExpanded: false },
   { id: "h", label: "H", group: "resistance", level: 2, parent: "resistance" },
   { id: "r", label: "R", group: "resistance", level: 2, parent: "resistance" },
   { id: "fq_res", label: "Fq", group: "resistance", level: 2, parent: "resistance" },
-  { id: "bdq_res", label: "Bdq", group: "resistance", level: 2, parent: "resistance" },
-  { id: "lzd_res", label: "Lzd", group: "resistance", level: 2, parent: "resistance" },
 
   { id: "regimens", label: "режимы лечения", group: "treatment", level: 1, parent: "mld_tb", collapsible: true, defaultExpanded: true },
   { id: "reg_6", label: "6 мес", group: "treatment", level: 2, parent: "regimens" },
@@ -62,13 +60,19 @@ const NODES = [
 
   { id: "control", label: "контроль", group: "control", level: 1, parent: "mld_tb", collapsible: true, defaultExpanded: false },
   { id: "ctrl_ecg", label: "ЭКГ", group: "control", level: 2, parent: "control" },
+  { id: "freq_ecg", label: "до старта, 2 нед,\nдалее ежемесячно", group: "control", level: 3, parent: "ctrl_ecg" },
   { id: "ctrl_oak", label: "ОАК", group: "control", level: 2, parent: "control" },
+  { id: "freq_oak", label: "еженедельно 1 мес,\nдалее ежемесячно", group: "control", level: 3, parent: "ctrl_oak" },
   { id: "ctrl_lft", label: "АЛТ/АСТ/билирубин", group: "control", level: 2, parent: "control" },
+  { id: "freq_lft", label: "каждые 2–4 нед", group: "control", level: 3, parent: "ctrl_lft" },
   { id: "ctrl_creat", label: "креатинин", group: "control", level: 2, parent: "control" },
   { id: "ctrl_kmgca", label: "K/Mg/Ca", group: "control", level: 2, parent: "control" },
+  { id: "freq_kmgca", label: "еженедельно\nпри QT-риске", group: "control", level: 3, parent: "ctrl_kmgca" },
   { id: "ctrl_tsh", label: "ТТГ", group: "control", level: 2, parent: "control" },
   { id: "ctrl_neuro", label: "осмотр\nневролога", group: "control", level: 2, parent: "control" },
+  { id: "freq_neuro", label: "ежемесячно", group: "control", level: 3, parent: "ctrl_neuro" },
   { id: "ctrl_opht", label: "офтальмолог", group: "control", level: 2, parent: "control" },
+  { id: "freq_opht", label: "каждые 1–3 мес", group: "control", level: 3, parent: "ctrl_opht" },
   { id: "ctrl_audio", label: "аудиометрия", group: "control", level: 2, parent: "control" },
 
   { id: "diagnostics", label: "обследования", group: "diagnostics", level: 1, parent: "mld_tb", collapsible: true, defaultExpanded: true },
@@ -108,7 +112,7 @@ const SEMANTIC_EDGES = [
   ["drug_cfz", "risk_qtc"], ["drug_cfz", "ctrl_ecg"],
   ["drug_cs", "risk_psy"], ["drug_cs", "risk_neuro"],
   ["drug_dlm", "risk_qtc"], ["drug_mfx", "risk_qtc"], ["drug_lfx", "risk_qtc"],
-  ["drug_pa", "risk_hepato"], ["drug_z", "risk_hepato"], ["drug_pto", "risk_hepato"], ["drug_pas", "risk_hepato"],
+  ["drug_pa", "risk_hepato"], ["drug_z", "risk_hepato"], ["drug_pto", "risk_hepato"], ["drug_pas", "risk_hepato"], ["drug_e", "risk_optic"],
 
   ["fq_res", "risk_qtc"],
   ["risk_hepato", "ctrl_lft"], ["risk_hepato", "ctrl_creat"],
@@ -116,8 +120,7 @@ const SEMANTIC_EDGES = [
   ["risk_qtc", "ctrl_ecg"], ["risk_myelo", "ctrl_oak"], ["risk_neuro", "ctrl_neuro"],
   ["risk_optic", "ctrl_opht"], ["risk_psy", "ctrl_neuro"], ["risk_periph", "ctrl_neuro"],
 
-  ["diag_electro", "ctrl_kmgca"], ["diag_ecg", "ctrl_ecg"], ["diag_biochem", "ctrl_lft"],
-  ["diag_cbc", "ctrl_oak"],
+  ["ctrl_ecg", "diag_ecg"], ["ctrl_oak", "diag_cbc"], ["ctrl_lft", "diag_biochem"], ["ctrl_kmgca", "diag_electro"],
 
   ["h", "logic_mdr"], ["r", "logic_mdr"], ["fq_res", "logic_prexdr"], ["mld_tb", "logic_prexdr"],
   ["drugs", "logic_monitor"], ["risks", "logic_monitor"], ["control", "logic_monitor"]

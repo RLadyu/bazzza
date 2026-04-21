@@ -10,7 +10,7 @@ const layout = {
   mld_tb: [780, 450],
 
   resistance: [230, 250],
-  h: [130, 170], r: [130, 250], fq_res: [130, 330], bdq_res: [230, 330], lzd_res: [230, 170],
+  h: [130, 190], r: [130, 250], fq_res: [130, 310],
 
   regimens: [780, 130],
   reg_6: [640, 70], reg_bpalm: [735, 50], reg_9: [825, 50], reg_18_20: [920, 70],
@@ -25,8 +25,15 @@ const layout = {
   risk_periph: [1080, 470], risk_optic: [1180, 470], risk_psy: [1280, 470], risk_electro: [1380, 470],
 
   control: [1260, 665],
-  ctrl_ecg: [1060, 620], ctrl_oak: [1140, 620], ctrl_lft: [1220, 620], ctrl_creat: [1300, 620], ctrl_kmgca: [1380, 620],
-  ctrl_tsh: [1060, 700], ctrl_neuro: [1140, 700], ctrl_opht: [1220, 700], ctrl_audio: [1300, 700],
+  ctrl_ecg: [1060, 620], freq_ecg: [980, 620],
+  ctrl_oak: [1140, 620], freq_oak: [1065, 655],
+  ctrl_lft: [1220, 620], freq_lft: [1220, 675],
+  ctrl_creat: [1300, 620],
+  ctrl_kmgca: [1380, 620], freq_kmgca: [1460, 620],
+  ctrl_tsh: [1060, 700],
+  ctrl_neuro: [1140, 700], freq_neuro: [1220, 740],
+  ctrl_opht: [1220, 700], freq_opht: [1300, 740],
+  ctrl_audio: [1300, 700],
 
   diagnostics: [820, 770],
   diag_smear: [610, 730], diag_culture: [690, 730], diag_pcr: [770, 730], diag_ct: [850, 730],
@@ -134,6 +141,11 @@ function expandPathFor(nodeId) {
   const node = nodesById.get(nodeId);
   if (node?.collapsible) {
     state.expanded.add(nodeId);
+  }
+
+  if (nodeId === "mld_tb") {
+    state.expanded.add("resistance");
+    state.expanded.add("regimens");
   }
 }
 
