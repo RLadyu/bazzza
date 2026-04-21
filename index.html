@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>МЛУ-ТБ: интерактивная схема взаимосвязей</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="page__header">
+        <div>
+          <h1>МЛУ-ТБ: интерактивная схема взаимосвязей</h1>
+          <p>
+            Клик по узлу выделяет связанные сущности, раскрывает вложенные разделы и
+            показывает клиническую логику мониторинга.
+          </p>
+        </div>
+      </header>
+
+      <section class="legend" id="legend"></section>
+      <section class="legend legend--relations" id="relationLegend"></section>
+
+      <aside id="controlInfo" class="control-info" aria-live="polite">
+        <h2 id="controlInfoTitle">Контроль</h2>
+        <p id="controlInfoFreq">Выберите узел контроля, чтобы увидеть кратность и особенности.</p>
+        <p id="controlInfoNotes"></p>
+      </aside>
+
+      <section class="graph-card" aria-label="Интерактивная схема МЛУ-ТБ">
+        <svg id="graph" viewBox="0 0 1600 900" role="img" aria-label="Граф взаимосвязей МЛУ-ТБ">
+          <g id="edgesSemantic"></g>
+          <g id="edgesHierarchy"></g>
+          <g id="nodes"></g>
+        </svg>
+      </section>
+    </main>
+
+    <script src="graph-data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

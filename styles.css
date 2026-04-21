@@ -1,0 +1,246 @@
+:root {
+  --bg: #f4f7fb;
+  --card: #ffffff;
+  --text: #1d2a3a;
+  --muted: #556477;
+  --line: #d7deea;
+  --accent: #1c6dd0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  color: var(--text);
+  background: linear-gradient(180deg, #f7f9fd 0%, #eef3fa 100%);
+}
+
+.page {
+  max-width: 1700px;
+  margin: 0 auto;
+  padding: 24px 24px 32px;
+}
+
+.page__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.2;
+}
+
+.page__header p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.legend {
+  margin: 18px 0 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card);
+  border: 1px solid #dce3ef;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  color: #2e435e;
+}
+
+.legend__swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+
+
+.legend--relations {
+  margin-top: 0;
+  margin-bottom: 18px;
+}
+
+.legend__item--relation {
+  font-size: 11px;
+}
+
+.legend__line {
+  width: 22px;
+  height: 0;
+  border-top: 2px solid #607a9e;
+  display: inline-block;
+}
+
+.legend__line.rel-drug-risk { border-color: #6a67d8; }
+.legend__line.rel-drug-control { border-color: #3b95b8; }
+.legend__line.rel-risk-control { border-color: #d08a1e; }
+.legend__line.rel-control-diagnostics { border-color: #2d9a70; }
+.legend__line.rel-regimen-drug { border-color: #7e59cc; }
+.legend__line.rel-definition { border-color: #3f6ea8; }
+
+
+.control-info {
+  background: #ffffff;
+  border: 1px solid #d8e2ef;
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 14px rgba(41, 69, 112, 0.08);
+  max-width: 520px;
+  display: none;
+}
+
+.control-info.visible {
+  display: block;
+}
+
+.control-info h2 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.control-info p {
+  margin: 4px 0;
+  font-size: 13px;
+  color: #334a67;
+}
+
+.graph-card {
+  background: #fbfdff;
+  border: 1px solid #dae3ef;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(41, 69, 112, 0.08);
+  padding: 14px;
+}
+
+#graph {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 16 / 9;
+}
+
+.node {
+  transition: opacity 0.28s ease, transform 0.2s ease;
+}
+
+.node circle {
+  stroke: white;
+  stroke-width: 2px;
+  transition: all 0.2s ease;
+}
+
+.node text {
+  fill: #102237;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: rgba(251, 253, 255, 0.92);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.node.level-0 text {
+  fill: #ffffff;
+  font-weight: 700;
+}
+
+.node.level-1 text {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.node.level-2 text {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.node.level-3 text {
+  font-size: 9px;
+  font-weight: 500;
+}
+
+.node.interactive {
+  cursor: pointer;
+}
+
+.node.interactive:hover circle {
+  stroke: #173e71;
+  stroke-width: 3px;
+  filter: brightness(1.06);
+}
+
+.edge {
+  fill: none;
+  transition: opacity 0.28s ease, stroke-width 0.28s ease;
+}
+
+.edge.hierarchy {
+  stroke: #8ea6c6;
+  stroke-width: 1.05;
+  opacity: 0.6;
+}
+
+.edge.semantic {
+  stroke: #607a9e;
+  stroke-width: 0.9;
+  stroke-dasharray: 4 5;
+  opacity: 0.35;
+}
+
+
+.edge.semantic.rel-drug-risk { stroke: #6a67d8; }
+.edge.semantic.rel-drug-control { stroke: #3b95b8; }
+.edge.semantic.rel-risk-control { stroke: #d08a1e; }
+.edge.semantic.rel-control-diagnostics { stroke: #2d9a70; }
+.edge.semantic.rel-regimen-drug { stroke: #7e59cc; }
+.edge.semantic.rel-definition { stroke: #3f6ea8; }
+.edge.semantic.rel-cross { stroke: #6f829d; }
+
+.dimmed {
+  opacity: 0.12 !important;
+}
+
+.highlighted {
+  opacity: 1 !important;
+}
+
+.edge.highlighted {
+  stroke-width: 2.1;
+  stroke: #1f62b8;
+  stroke-dasharray: 0;
+  opacity: 0.95;
+  filter: drop-shadow(0 0 3px rgba(35, 92, 159, 0.45));
+}
+
+.edge.semantic.highlighted {
+  stroke: #245c9f;
+  stroke-width: 1.8;
+}
+
+.node.active circle {
+  stroke: #0f315f;
+  stroke-width: 4px;
+  filter: brightness(1.08) drop-shadow(0 0 6px rgba(26, 78, 150, 0.25));
+}
+
+@media (max-width: 1200px) {
+  h1 {
+    font-size: 24px;
+  }
+}
