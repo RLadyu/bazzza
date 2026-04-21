@@ -1,0 +1,196 @@
+:root {
+  --bg: #f4f7fb;
+  --card: #ffffff;
+  --text: #1d2a3a;
+  --muted: #556477;
+  --line: #d7deea;
+  --accent: #1c6dd0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  color: var(--text);
+  background: linear-gradient(180deg, #f7f9fd 0%, #eef3fa 100%);
+}
+
+.page {
+  max-width: 1700px;
+  margin: 0 auto;
+  padding: 24px 24px 32px;
+}
+
+.page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.2;
+}
+
+.page__header p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.reset-btn {
+  border: 1px solid #b8c5d8;
+  background: white;
+  color: #284261;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reset-btn:hover {
+  border-color: #8ea4c2;
+  transform: translateY(-1px);
+}
+
+.legend {
+  margin: 18px 0 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card);
+  border: 1px solid #dce3ef;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  color: #2e435e;
+}
+
+.legend__swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.graph-card {
+  background: #fbfdff;
+  border: 1px solid #dae3ef;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(41, 69, 112, 0.08);
+  padding: 14px;
+}
+
+#graph {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 16 / 9;
+}
+
+.node {
+  transition: opacity 0.28s ease, transform 0.2s ease;
+}
+
+.node circle {
+  stroke: white;
+  stroke-width: 2px;
+  transition: all 0.2s ease;
+}
+
+.node text {
+  fill: #102237;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+}
+
+.node.level-0 text {
+  fill: #ffffff;
+  font-weight: 700;
+}
+
+.node.level-1 text {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.node.level-2 text,
+.node.level-3 text {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.node.interactive {
+  cursor: pointer;
+}
+
+.node.interactive:hover circle {
+  stroke: #173e71;
+  stroke-width: 3px;
+  filter: brightness(1.06);
+}
+
+.edge {
+  fill: none;
+  transition: opacity 0.28s ease, stroke-width 0.28s ease;
+}
+
+.edge.hierarchy {
+  stroke: #8ea6c6;
+  stroke-width: 1.5;
+}
+
+.edge.semantic {
+  stroke: #607a9e;
+  stroke-width: 1.25;
+  stroke-dasharray: 5 5;
+}
+
+.dimmed {
+  opacity: 0.12 !important;
+}
+
+.highlighted {
+  opacity: 1 !important;
+}
+
+.edge.highlighted {
+  stroke-width: 3;
+  stroke: #1f62b8;
+  stroke-dasharray: 0;
+}
+
+.edge.semantic.highlighted {
+  stroke: #245c9f;
+  stroke-width: 2.6;
+}
+
+.node.active circle {
+  stroke: #0f315f;
+  stroke-width: 4px;
+  filter: brightness(1.08);
+}
+
+.node.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 1200px) {
+  h1 {
+    font-size: 24px;
+  }
+}
