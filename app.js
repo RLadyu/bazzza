@@ -14,6 +14,7 @@ const RELATION_LEGEND = [
   { cls: "rel-definition", label: "Базовые связи МЛУ-ТБ" },
   { cls: "rel-regimen-drug", label: "Режим ↔ препараты" },
   { cls: "rel-drug-risk", label: "Препарат ↔ риск/НЯ" },
+  { cls: "rel-drug-control", label: "Препарат ↔ контроль" },
   { cls: "rel-risk-control", label: "Риск/НЯ ↔ контроль" },
   { cls: "rel-control-diagnostics", label: "Контроль ↔ обследование" }
 ];
@@ -135,6 +136,9 @@ function relationClass(edge) {
   if ((has("drug_", source) && has("risk_", target)) || (has("risk_", source) && has("drug_", target))) {
     return "rel-drug-risk";
   }
+  if ((has("drug_", source) && has("ctrl_", target)) || (has("ctrl_", source) && has("drug_", target))) {
+    return "rel-drug-control";
+  }
   if ((has("risk_", source) && has("ctrl_", target)) || (has("ctrl_", source) && has("risk_", target))) {
     return "rel-risk-control";
   }
@@ -206,10 +210,10 @@ function expandPathFor(nodeId) {
     ["risks", "control", "diagnostics"].forEach((id) => state.expanded.add(id));
   }
   if (nodeId.startsWith("risk_")) {
-    ["control", "diagnostics"].forEach((id) => state.expanded.add(id));
+    ["drugs", "control", "diagnostics"].forEach((id) => state.expanded.add(id));
   }
-  if (nodeId.startsWith("ctrl_")) {
-    state.expanded.add("diagnostics");
+  if (nodeId.startsWith("ctrl_") || nodeId.startsWith("freq_")) {
+    ["drugs", "risks", "diagnostics"].forEach((id) => state.expanded.add(id));
   }
 }
 

@@ -86,6 +86,7 @@ h1 {
 }
 
 .legend__line.rel-drug-risk { border-color: #6a67d8; }
+.legend__line.rel-drug-control { border-color: #3b95b8; }
 .legend__line.rel-risk-control { border-color: #d08a1e; }
 .legend__line.rel-control-diagnostics { border-color: #2d9a70; }
 .legend__line.rel-regimen-drug { border-color: #7e59cc; }
@@ -204,6 +205,7 @@ h1 {
 
 
 .edge.semantic.rel-drug-risk { stroke: #6a67d8; }
+.edge.semantic.rel-drug-control { stroke: #3b95b8; }
 .edge.semantic.rel-risk-control { stroke: #d08a1e; }
 .edge.semantic.rel-control-diagnostics { stroke: #2d9a70; }
 .edge.semantic.rel-regimen-drug { stroke: #7e59cc; }

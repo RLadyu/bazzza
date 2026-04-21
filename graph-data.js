@@ -106,6 +106,20 @@ const SEMANTIC_EDGES = [
   ["drug_pas", "risk_hepato"], ["drug_pas", "risk_gi"], ["drug_pas", "risk_endo"],
   ["drug_e", "risk_optic"],
 
+
+  ["drug_bdq", "ctrl_ecg"], ["drug_bdq", "ctrl_kmgca"],
+  ["drug_lzd", "ctrl_oak"], ["drug_lzd", "ctrl_neuro"], ["drug_lzd", "ctrl_opht"],
+  ["drug_lfx", "ctrl_ecg"], ["drug_lfx", "ctrl_kmgca"],
+  ["drug_mfx", "ctrl_ecg"], ["drug_mfx", "ctrl_kmgca"],
+  ["drug_dlm", "ctrl_ecg"], ["drug_dlm", "ctrl_kmgca"],
+  ["drug_cfz", "ctrl_ecg"], ["drug_cfz", "ctrl_kmgca"],
+  ["drug_pa", "ctrl_lft"], ["drug_pa", "ctrl_creat"],
+  ["drug_cs", "ctrl_neuro"],
+  ["drug_z", "ctrl_lft"],
+  ["drug_e", "ctrl_opht"],
+  ["drug_pas", "ctrl_lft"], ["drug_pas", "ctrl_tsh"],
+  ["drug_pto", "ctrl_lft"], ["drug_pto", "ctrl_tsh"], ["drug_pto", "ctrl_neuro"],
+
   ["risk_qtc", "ctrl_ecg"], ["risk_myelo", "ctrl_oak"], ["risk_neuro", "ctrl_neuro"], ["risk_hepato", "ctrl_lft"],
   ["risk_hepato", "ctrl_creat"], ["risk_periph", "ctrl_neuro"], ["risk_optic", "ctrl_opht"], ["risk_psy", "ctrl_neuro"],
   ["risk_electro", "ctrl_kmgca"], ["risk_electro", "ctrl_ecg"],
