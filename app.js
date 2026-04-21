@@ -34,11 +34,11 @@ const NODE_RADIUS = { 0: 52, 1: 34, 2: 23, 3: 20 };
 const layout = {
   mld_tb: [780, 450],
 
-  resistance: [230, 250],
-  h: [130, 190], r: [130, 250], fq_res: [130, 310],
+  resistance: [220, 260],
+  h: [90, 170], r: [90, 260], fq_res: [90, 350],
 
-  regimens: [780, 130],
-  reg_6: [640, 70], reg_bpalm: [735, 50], reg_9: [825, 50], reg_18_20: [920, 70],
+  regimens: [780, 120],
+  reg_6: [620, 55], reg_bpalm: [725, 35], reg_9: [835, 35], reg_18_20: [940, 55],
 
   drugs: [1220, 210],
   drug_bdq: [1060, 150], drug_lzd: [1140, 150], drug_lfx: [1220, 150], drug_mfx: [1300, 150],
@@ -94,8 +94,6 @@ function createLegend() {
     div.innerHTML = `<span class="legend__swatch" style="background:${GROUP_COLORS[item.group]}"></span>${item.label}`;
     legendHost.appendChild(div);
   });
-
-  renderControlInfo();
 }
 
 
@@ -106,8 +104,6 @@ function createRelationLegend() {
     div.innerHTML = `<span class="legend__line ${item.cls}"></span>${item.label}`;
     relationLegendHost.appendChild(div);
   });
-
-  renderControlInfo();
 }
 function edgePath(from, to, type, sourceId, targetId) {
   const [x1, y1] = from;
@@ -204,6 +200,16 @@ function expandPathFor(nodeId) {
 
   if (nodeId === "mld_tb") {
     ["resistance", "regimens", "drugs", "risks", "control", "diagnostics"].forEach((id) => state.expanded.add(id));
+  }
+
+  if (nodeId.startsWith("drug_")) {
+    ["risks", "control", "diagnostics"].forEach((id) => state.expanded.add(id));
+  }
+  if (nodeId.startsWith("risk_")) {
+    ["control", "diagnostics"].forEach((id) => state.expanded.add(id));
+  }
+  if (nodeId.startsWith("ctrl_")) {
+    state.expanded.add("diagnostics");
   }
 }
 
@@ -346,8 +352,6 @@ function render() {
 
     nodeLayer.appendChild(g);
   });
-
-  renderControlInfo();
 }
 
 svg.addEventListener("click", () => {
