@@ -55,6 +55,8 @@ const NODES = [
   { id: "risk_optic", label: "неврит\nзрительного нерва", group: "risks", level: 2, parent: "risks" },
   { id: "risk_psy", label: "психоневро-\nлогические реакции", group: "risks", level: 2, parent: "risks" },
   { id: "risk_electro", label: "электролитные\nнарушения", group: "risks", level: 2, parent: "risks" },
+  { id: "risk_gi", label: "ЖКТ реакции", group: "risks", level: 2, parent: "risks" },
+  { id: "risk_endo", label: "эндокринные\nнарушения", group: "risks", level: 2, parent: "risks" },
 
   { id: "control", label: "контроль", group: "control", level: 1, parent: "mld_tb", collapsible: true, defaultExpanded: false },
   { id: "ctrl_ecg", label: "ЭКГ", group: "control", level: 2, parent: "control" },
@@ -94,14 +96,20 @@ const SEMANTIC_EDGES = [
   ["reg_9", "drug_lfx"], ["reg_9", "drug_cfz"], ["reg_9", "drug_cs"], ["reg_9", "drug_z"],
   ["reg_18_20", "drug_lfx"], ["reg_18_20", "drug_cs"], ["reg_18_20", "drug_e"], ["reg_18_20", "drug_pas"], ["reg_18_20", "drug_pto"],
 
-  ["drug_bdq", "risk_qtc"], ["drug_lzd", "risk_myelo"], ["drug_lzd", "risk_periph"], ["drug_lzd", "risk_optic"],
+  ["drug_bdq", "risk_qtc"], ["drug_bdq", "risk_electro"],
+  ["drug_lzd", "risk_myelo"], ["drug_lzd", "risk_periph"], ["drug_lzd", "risk_optic"], ["drug_lzd", "risk_neuro"],
   ["drug_cfz", "risk_qtc"], ["drug_cs", "risk_psy"], ["drug_cs", "risk_neuro"],
   ["drug_dlm", "risk_qtc"], ["drug_mfx", "risk_qtc"], ["drug_lfx", "risk_qtc"],
-  ["drug_pa", "risk_hepato"], ["drug_z", "risk_hepato"], ["drug_pto", "risk_hepato"], ["drug_pas", "risk_hepato"], ["drug_e", "risk_optic"],
+  ["drug_pa", "risk_hepato"], ["drug_pa", "risk_gi"],
+  ["drug_z", "risk_hepato"], ["drug_z", "risk_gi"],
+  ["drug_pto", "risk_hepato"], ["drug_pto", "risk_psy"], ["drug_pto", "risk_gi"], ["drug_pto", "risk_endo"],
+  ["drug_pas", "risk_hepato"], ["drug_pas", "risk_gi"], ["drug_pas", "risk_endo"],
+  ["drug_e", "risk_optic"],
 
   ["risk_qtc", "ctrl_ecg"], ["risk_myelo", "ctrl_oak"], ["risk_neuro", "ctrl_neuro"], ["risk_hepato", "ctrl_lft"],
   ["risk_hepato", "ctrl_creat"], ["risk_periph", "ctrl_neuro"], ["risk_optic", "ctrl_opht"], ["risk_psy", "ctrl_neuro"],
   ["risk_electro", "ctrl_kmgca"], ["risk_electro", "ctrl_ecg"],
+  ["risk_gi", "ctrl_lft"], ["risk_gi", "ctrl_creat"], ["risk_endo", "ctrl_tsh"],
 
   ["ctrl_ecg", "diag_ecg"], ["ctrl_oak", "diag_cbc"], ["ctrl_lft", "diag_biochem"], ["ctrl_kmgca", "diag_electro"]
 ].map(([source, target]) => ({ source, target, type: "semantic" }));

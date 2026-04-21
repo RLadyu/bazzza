@@ -4,6 +4,10 @@ const hierarchyLayer = document.getElementById("edgesHierarchy");
 const semanticLayer = document.getElementById("edgesSemantic");
 const legendHost = document.getElementById("legend");
 const relationLegendHost = document.getElementById("relationLegend");
+const controlInfo = document.getElementById("controlInfo");
+const controlInfoTitle = document.getElementById("controlInfoTitle");
+const controlInfoFreq = document.getElementById("controlInfoFreq");
+const controlInfoNotes = document.getElementById("controlInfoNotes");
 
 
 const RELATION_LEGEND = [
@@ -13,6 +17,18 @@ const RELATION_LEGEND = [
   { cls: "rel-risk-control", label: "Риск/НЯ ↔ контроль" },
   { cls: "rel-control-diagnostics", label: "Контроль ↔ обследование" }
 ];
+
+const CONTROL_DETAILS = {
+  ctrl_ecg: { title: "ЭКГ", freq: "До старта, через 2 недели, далее ежемесячно.", notes: "Усилить частоту при сочетании QT-пролонгирующих препаратов (Bdq, Dlm, Fq, Cfz)." },
+  ctrl_oak: { title: "ОАК", freq: "Еженедельно первый месяц, затем ежемесячно.", notes: "Критично для Lzd-ассоциированной миелотоксичности." },
+  ctrl_lft: { title: "АЛТ/АСТ/билирубин", freq: "Каждые 2–4 недели.", notes: "Особенно при Pa, Z, PAS, Pto/Eto и симптомах ЖКТ/гепатотоксичности." },
+  ctrl_creat: { title: "Креатинин", freq: "Ежемесячно, при отклонениях чаще.", notes: "Нужен при системной токсичности и ЖКТ-обезвоживании." },
+  ctrl_kmgca: { title: "K/Mg/Ca", freq: "Еженедельно при QT-риске, далее по клинике.", notes: "Коррекция электролитов обязательна для профилактики аритмий." },
+  ctrl_tsh: { title: "ТТГ", freq: "Ежемесячно / раз в 1–3 месяца.", notes: "Контроль эндокринных нарушений на фоне PAS, Pto/Eto." },
+  ctrl_neuro: { title: "Осмотр невролога", freq: "Ежемесячно.", notes: "Мониторинг нейро- и психоневрологических НЯ (Lzd, Cs/Trd, Pto/Eto)." },
+  ctrl_opht: { title: "Офтальмолог", freq: "Каждые 1–3 месяца.", notes: "Необходим при риске неврита зрительного нерва (Lzd, E)." },
+  ctrl_audio: { title: "Аудиометрия", freq: "По показаниям / при симптомах.", notes: "Актуально при ототоксичных схемах (если добавляются инъекционные препараты)." }
+};
 const NODE_RADIUS = { 0: 52, 1: 34, 2: 23, 3: 20 };
 
 const layout = {
@@ -30,8 +46,8 @@ const layout = {
   drug_z: [1300, 235], drug_e: [1380, 235], drug_pas: [1140, 320], drug_pto: [1300, 320],
 
   risks: [1260, 430],
-  risk_qtc: [1040, 390], risk_myelo: [1180, 390], risk_neuro: [1320, 390], risk_hepato: [1460, 390],
-  risk_periph: [1040, 485], risk_optic: [1180, 485], risk_psy: [1320, 485], risk_electro: [1460, 485],
+  risk_qtc: [990, 390], risk_myelo: [1130, 390], risk_neuro: [1270, 390], risk_hepato: [1410, 390], risk_gi: [1550, 390],
+  risk_periph: [990, 485], risk_optic: [1130, 485], risk_psy: [1270, 485], risk_electro: [1410, 485], risk_endo: [1550, 485],
 
   control: [1260, 665],
   ctrl_ecg: [1020, 620], freq_ecg: [930, 620],
@@ -51,6 +67,7 @@ const layout = {
 
 const state = {
   focusedNodeId: null,
+  selectedControlId: null,
   expanded: new Set(
     GRAPH_DATA.nodes.filter((n) => n.collapsible && n.defaultExpanded).map((n) => n.id)
   )
@@ -77,6 +94,8 @@ function createLegend() {
     div.innerHTML = `<span class="legend__swatch" style="background:${GROUP_COLORS[item.group]}"></span>${item.label}`;
     legendHost.appendChild(div);
   });
+
+  renderControlInfo();
 }
 
 
@@ -87,6 +106,8 @@ function createRelationLegend() {
     div.innerHTML = `<span class="legend__line ${item.cls}"></span>${item.label}`;
     relationLegendHost.appendChild(div);
   });
+
+  renderControlInfo();
 }
 function edgePath(from, to, type, sourceId, targetId) {
   const [x1, y1] = from;
@@ -218,6 +239,20 @@ function clinicalFocus(nodeId) {
   return new Set([...focus].filter((id) => isVisible(id)));
 }
 
+
+function renderControlInfo() {
+  if (!state.selectedControlId || !CONTROL_DETAILS[state.selectedControlId]) {
+    controlInfo.classList.remove("visible");
+    return;
+  }
+
+  const info = CONTROL_DETAILS[state.selectedControlId];
+  controlInfoTitle.textContent = info.title;
+  controlInfoFreq.textContent = `Кратность: ${info.freq}`;
+  controlInfoNotes.textContent = `Особенности: ${info.notes}`;
+  controlInfo.classList.add("visible");
+}
+
 function render() {
   hierarchyLayer.innerHTML = "";
   semanticLayer.innerHTML = "";
@@ -294,15 +329,30 @@ function render() {
       }
 
       state.focusedNodeId = clickingFocused ? null : node.id;
+      if (!clickingFocused) {
+        if (node.id.startsWith("ctrl_")) {
+          state.selectedControlId = node.id;
+        } else if (node.id.startsWith("freq_")) {
+          const parentId = nodesById.get(node.id)?.parent;
+          state.selectedControlId = parentId && parentId.startsWith("ctrl_") ? parentId : null;
+        } else {
+          state.selectedControlId = null;
+        }
+      } else {
+        state.selectedControlId = null;
+      }
       render();
     });
 
     nodeLayer.appendChild(g);
   });
+
+  renderControlInfo();
 }
 
 svg.addEventListener("click", () => {
   state.focusedNodeId = null;
+  state.selectedControlId = null;
   render();
 });
 

@@ -91,6 +91,33 @@ h1 {
 .legend__line.rel-regimen-drug { border-color: #7e59cc; }
 .legend__line.rel-definition { border-color: #3f6ea8; }
 
+
+.control-info {
+  background: #ffffff;
+  border: 1px solid #d8e2ef;
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 14px rgba(41, 69, 112, 0.08);
+  max-width: 520px;
+  display: none;
+}
+
+.control-info.visible {
+  display: block;
+}
+
+.control-info h2 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.control-info p {
+  margin: 4px 0;
+  font-size: 13px;
+  color: #334a67;
+}
+
 .graph-card {
   background: #fbfdff;
   border: 1px solid #dae3ef;
