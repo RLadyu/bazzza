@@ -67,6 +67,30 @@ h1 {
   border-radius: 50%;
 }
 
+
+
+.legend--relations {
+  margin-top: 0;
+  margin-bottom: 18px;
+}
+
+.legend__item--relation {
+  font-size: 11px;
+}
+
+.legend__line {
+  width: 22px;
+  height: 0;
+  border-top: 2px solid #607a9e;
+  display: inline-block;
+}
+
+.legend__line.rel-drug-risk { border-color: #6a67d8; }
+.legend__line.rel-risk-control { border-color: #d08a1e; }
+.legend__line.rel-control-diagnostics { border-color: #2d9a70; }
+.legend__line.rel-regimen-drug { border-color: #7e59cc; }
+.legend__line.rel-definition { border-color: #3f6ea8; }
+
 .graph-card {
   background: #fbfdff;
   border: 1px solid #dae3ef;
@@ -148,8 +172,16 @@ h1 {
   stroke: #607a9e;
   stroke-width: 0.9;
   stroke-dasharray: 4 5;
-  opacity: 0.5;
+  opacity: 0.35;
 }
+
+
+.edge.semantic.rel-drug-risk { stroke: #6a67d8; }
+.edge.semantic.rel-risk-control { stroke: #d08a1e; }
+.edge.semantic.rel-control-diagnostics { stroke: #2d9a70; }
+.edge.semantic.rel-regimen-drug { stroke: #7e59cc; }
+.edge.semantic.rel-definition { stroke: #3f6ea8; }
+.edge.semantic.rel-cross { stroke: #6f829d; }
 
 .dimmed {
   opacity: 0.12 !important;
@@ -164,7 +196,7 @@ h1 {
   stroke: #1f62b8;
   stroke-dasharray: 0;
   opacity: 0.95;
-  filter: drop-shadow(0 0 1.5px rgba(35, 92, 159, 0.35));
+  filter: drop-shadow(0 0 3px rgba(35, 92, 159, 0.45));
 }
 
 .edge.semantic.highlighted {
@@ -175,7 +207,7 @@ h1 {
 .node.active circle {
   stroke: #0f315f;
   stroke-width: 4px;
-  filter: brightness(1.08);
+  filter: brightness(1.08) drop-shadow(0 0 6px rgba(26, 78, 150, 0.25));
 }
 
 @media (max-width: 1200px) {

@@ -3,7 +3,16 @@ const nodeLayer = document.getElementById("nodes");
 const hierarchyLayer = document.getElementById("edgesHierarchy");
 const semanticLayer = document.getElementById("edgesSemantic");
 const legendHost = document.getElementById("legend");
+const relationLegendHost = document.getElementById("relationLegend");
 
+
+const RELATION_LEGEND = [
+  { cls: "rel-definition", label: "Определение / логика МЛУ-ТБ" },
+  { cls: "rel-regimen-drug", label: "Режим ↔ препараты" },
+  { cls: "rel-drug-risk", label: "Препарат ↔ риск/НЯ" },
+  { cls: "rel-risk-control", label: "Риск/НЯ ↔ контроль" },
+  { cls: "rel-control-diagnostics", label: "Контроль ↔ обследование" }
+];
 const NODE_RADIUS = { 0: 52, 1: 34, 2: 23, 3: 20 };
 
 const layout = {
@@ -73,6 +82,15 @@ function createLegend() {
   });
 }
 
+
+function createRelationLegend() {
+  RELATION_LEGEND.forEach((item) => {
+    const div = document.createElement("div");
+    div.className = "legend__item legend__item--relation";
+    div.innerHTML = `<span class="legend__line ${item.cls}"></span>${item.label}`;
+    relationLegendHost.appendChild(div);
+  });
+}
 function edgePath(from, to, type, sourceId, targetId) {
   const [x1, y1] = from;
   const [x2, y2] = to;
@@ -94,6 +112,30 @@ function edgePath(from, to, type, sourceId, targetId) {
   return `M ${x1} ${y1} Q ${(x1 + x2) / 2} ${(y1 + y2) / 2 - bend} ${x2} ${y2}`;
 }
 
+
+function relationClass(edge) {
+  const pair = `${edge.source}->${edge.target}`;
+  const source = edge.source;
+  const target = edge.target;
+
+  const has = (prefix, id) => id.startsWith(prefix);
+  if ((has("drug_", source) && has("risk_", target)) || (has("risk_", source) && has("drug_", target))) {
+    return "rel-drug-risk";
+  }
+  if ((has("risk_", source) && has("ctrl_", target)) || (has("ctrl_", source) && has("risk_", target))) {
+    return "rel-risk-control";
+  }
+  if ((has("ctrl_", source) && has("diag_", target)) || (has("diag_", source) && has("ctrl_", target))) {
+    return "rel-control-diagnostics";
+  }
+  if ((has("reg_", source) && has("drug_", target)) || (has("drug_", source) && has("reg_", target))) {
+    return "rel-regimen-drug";
+  }
+  if (pair.includes("logic") || source === "mld_tb" || target === "mld_tb" || source === "h" || source === "r" || target === "h" || target === "r") {
+    return "rel-definition";
+  }
+  return "rel-cross";
+}
 function isVisible(nodeId) {
   const node = nodesById.get(nodeId);
   if (!node?.parent) return true;
@@ -144,8 +186,7 @@ function expandPathFor(nodeId) {
   }
 
   if (nodeId === "mld_tb") {
-    state.expanded.add("resistance");
-    state.expanded.add("regimens");
+    ["resistance", "regimens", "drugs", "risks", "control", "diagnostics"].forEach((id) => state.expanded.add(id));
   }
 }
 
@@ -196,6 +237,7 @@ function render() {
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path.setAttribute("d", edgePath(layout[edge.source], layout[edge.target], edge.type, edge.source, edge.target));
     path.classList.add("edge", edge.type);
+    if (edge.type === "semantic") path.classList.add(relationClass(edge));
 
     if (focusSet) {
       const active = focusSet.has(edge.source) && focusSet.has(edge.target);
@@ -269,4 +311,5 @@ svg.addEventListener("click", () => {
 });
 
 createLegend();
+createRelationLegend();
 render();
