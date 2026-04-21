@@ -7,33 +7,33 @@ const legendHost = document.getElementById("legend");
 const NODE_RADIUS = { 0: 52, 1: 34, 2: 23, 3: 20 };
 
 const layout = {
-  mld_tb: [800, 450],
+  mld_tb: [780, 450],
 
-  resistance: [320, 250],
-  h: [220, 180], r: [220, 250], fq_res: [220, 320], bdq_res: [320, 320], lzd_res: [320, 180],
+  resistance: [230, 250],
+  h: [130, 170], r: [130, 250], fq_res: [130, 330], bdq_res: [230, 330], lzd_res: [230, 170],
 
-  regimens: [800, 130],
-  reg_6: [670, 130], reg_bpalm: [760, 70], reg_9: [840, 70], reg_18_20: [930, 130],
+  regimens: [780, 130],
+  reg_6: [640, 70], reg_bpalm: [735, 50], reg_9: [825, 50], reg_18_20: [920, 70],
 
-  drugs: [1120, 220],
-  drug_bdq: [1010, 170], drug_lzd: [1075, 170], drug_lfx: [1140, 170], drug_mfx: [1205, 170],
-  drug_dlm: [1270, 170], drug_cfz: [1010, 255], drug_pa: [1075, 255], drug_cs: [1140, 255],
-  drug_z: [1205, 255], drug_e: [1270, 255], drug_pas: [1075, 340], drug_pto: [1205, 340],
+  drugs: [1220, 210],
+  drug_bdq: [1060, 150], drug_lzd: [1140, 150], drug_lfx: [1220, 150], drug_mfx: [1300, 150],
+  drug_dlm: [1380, 150], drug_cfz: [1060, 235], drug_pa: [1140, 235], drug_cs: [1220, 235],
+  drug_z: [1300, 235], drug_e: [1380, 235], drug_pas: [1140, 320], drug_pto: [1300, 320],
 
-  risks: [1220, 430],
-  risk_qtc: [1070, 390], risk_myelo: [1170, 390], risk_neuro: [1270, 390], risk_hepato: [1370, 390],
-  risk_periph: [1070, 470], risk_optic: [1170, 470], risk_psy: [1270, 470], risk_electro: [1370, 470],
+  risks: [1260, 430],
+  risk_qtc: [1080, 390], risk_myelo: [1180, 390], risk_neuro: [1280, 390], risk_hepato: [1380, 390],
+  risk_periph: [1080, 470], risk_optic: [1180, 470], risk_psy: [1280, 470], risk_electro: [1380, 470],
 
-  control: [1220, 650],
-  ctrl_ecg: [1040, 610], ctrl_oak: [1120, 610], ctrl_lft: [1200, 610], ctrl_creat: [1280, 610], ctrl_kmgca: [1360, 610],
-  ctrl_tsh: [1040, 690], ctrl_neuro: [1120, 690], ctrl_opht: [1200, 690], ctrl_audio: [1280, 690],
+  control: [1260, 665],
+  ctrl_ecg: [1060, 620], ctrl_oak: [1140, 620], ctrl_lft: [1220, 620], ctrl_creat: [1300, 620], ctrl_kmgca: [1380, 620],
+  ctrl_tsh: [1060, 700], ctrl_neuro: [1140, 700], ctrl_opht: [1220, 700], ctrl_audio: [1300, 700],
 
-  diagnostics: [820, 760],
-  diag_smear: [650, 720], diag_culture: [730, 720], diag_pcr: [810, 720], diag_ct: [890, 720],
-  diag_cbc: [970, 720], diag_biochem: [1050, 720], diag_electro: [1130, 720], diag_ecg: [1210, 720],
+  diagnostics: [820, 770],
+  diag_smear: [610, 730], diag_culture: [690, 730], diag_pcr: [770, 730], diag_ct: [850, 730],
+  diag_cbc: [930, 730], diag_biochem: [1010, 730], diag_electro: [1090, 730], diag_ecg: [1170, 730],
 
-  logic: [380, 680],
-  logic_mdr: [220, 620], logic_prexdr: [220, 700], logic_profile: [380, 620], logic_monitor: [380, 700]
+  logic: [300, 680],
+  logic_mdr: [120, 620], logic_prexdr: [120, 710], logic_profile: [300, 620], logic_monitor: [300, 710]
 };
 
 const state = {
@@ -66,14 +66,24 @@ function createLegend() {
   });
 }
 
-function edgePath(from, to, type) {
+function edgePath(from, to, type, sourceId, targetId) {
   const [x1, y1] = from;
   const [x2, y2] = to;
-  if (type === "hierarchy") {
-    const midX = (x1 + x2) / 2;
-    return `M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}`;
+  const sourceNode = nodesById.get(sourceId);
+  const targetNode = nodesById.get(targetId);
+
+  if (sourceNode?.level === 0 || targetNode?.level === 0) {
+    const c1x = x1 + (x2 - x1) * 0.35;
+    const c2x = x1 + (x2 - x1) * 0.65;
+    return `M ${x1} ${y1} C ${c1x} ${y1}, ${c2x} ${y2}, ${x2} ${y2}`;
   }
-  const bend = Math.abs(x2 - x1) < 120 ? 40 : 70;
+
+  if (type === "hierarchy") {
+    const midY = y1 + (y2 - y1) * 0.5;
+    return `M ${x1} ${y1} L ${x1} ${midY} L ${x2} ${midY} L ${x2} ${y2}`;
+  }
+
+  const bend = Math.max(30, Math.min(70, Math.abs(x2 - x1) * 0.18));
   return `M ${x1} ${y1} Q ${(x1 + x2) / 2} ${(y1 + y2) / 2 - bend} ${x2} ${y2}`;
 }
 
@@ -172,7 +182,7 @@ function render() {
     if (!visibleSet.has(edge.source) || !visibleSet.has(edge.target)) return;
 
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path.setAttribute("d", edgePath(layout[edge.source], layout[edge.target], edge.type));
+    path.setAttribute("d", edgePath(layout[edge.source], layout[edge.target], edge.type, edge.source, edge.target));
     path.classList.add("edge", edge.type);
 
     if (focusSet) {

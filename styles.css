@@ -97,6 +97,10 @@ h1 {
   text-anchor: middle;
   dominant-baseline: middle;
   pointer-events: none;
+  paint-order: stroke;
+  stroke: rgba(251, 253, 255, 0.92);
+  stroke-width: 3px;
+  stroke-linejoin: round;
 }
 
 .node.level-0 text {
@@ -111,7 +115,7 @@ h1 {
 
 .node.level-2 text,
 .node.level-3 text {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
 }
 
@@ -132,13 +136,15 @@ h1 {
 
 .edge.hierarchy {
   stroke: #8ea6c6;
-  stroke-width: 1.5;
+  stroke-width: 1.05;
+  opacity: 0.6;
 }
 
 .edge.semantic {
   stroke: #607a9e;
-  stroke-width: 1.25;
-  stroke-dasharray: 5 5;
+  stroke-width: 0.9;
+  stroke-dasharray: 4 5;
+  opacity: 0.5;
 }
 
 .dimmed {
@@ -150,14 +156,16 @@ h1 {
 }
 
 .edge.highlighted {
-  stroke-width: 3;
+  stroke-width: 2.1;
   stroke: #1f62b8;
   stroke-dasharray: 0;
+  opacity: 0.95;
+  filter: drop-shadow(0 0 1.5px rgba(35, 92, 159, 0.35));
 }
 
 .edge.semantic.highlighted {
   stroke: #245c9f;
-  stroke-width: 2.6;
+  stroke-width: 1.8;
 }
 
 .node.active circle {
