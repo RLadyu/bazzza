@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+ <Styles>
+  <Style ss:ID="Header">
+   <Font ss:Bold="1" ss:Color="#FFFFFF"/>
+   <Interior ss:Color="#1F4E78" ss:Pattern="Solid"/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="Инструкция">
+  <Table>
+   <Row><Cell><Data ss:Type="String">Excel-приложение для опроса пациентов отделения.</Data></Cell></Row>
+   <Row><Cell><Data ss:Type="String">1) Вносите пациентов на листе Пациенты.</Data></Cell></Row>
+   <Row><Cell><Data ss:Type="String">2) Вносите оценки 1..5 на листе Опрос.</Data></Cell></Row>
+   <Row><Cell><Data ss:Type="String">3) Свод рассчитывается автоматически на листе Свод.</Data></Cell></Row>
+  </Table>
+ </Worksheet>
+ <Worksheet ss:Name="Пациенты">
+  <Table>
+   <Row>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">patient_id</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Дата</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">ФИО</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Пол</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Возраст</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Палата</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Formula="=\"P00001\""><Data ss:Type="String"></Data></Cell>
+    <Cell><Data ss:Type="String"></Data></Cell>
+    <Cell><Data ss:Type="String"></Data></Cell>
+    <Cell><Data ss:Type="String"></Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="String"></Data></Cell>
+   </Row>
+  </Table>
+ </Worksheet>
+ <Worksheet ss:Name="Опрос">
+  <Table>
+   <Row>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">patient_id</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Q1 Качество</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Q2 Коммуникация</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Q3 Скорость</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Q4 Комфорт</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Q5 Итого</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String"></Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:Formula="=AVERAGE(RC[-4]:RC[-1])"><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+  </Table>
+ </Worksheet>
+ <Worksheet ss:Name="Свод">
+  <Table>
+   <Row><Cell ss:StyleID="Header"><Data ss:Type="String">Показатель</Data></Cell><Cell ss:StyleID="Header"><Data ss:Type="String">Значение</Data></Cell></Row>
+   <Row><Cell><Data ss:Type="String">Заполнено анкет</Data></Cell><Cell ss:Formula="=COUNTA(Опрос!R2C1:R1001C1)"><Data ss:Type="Number">0</Data></Cell></Row>
+   <Row><Cell><Data ss:Type="String">Средняя удовлетворённость</Data></Cell><Cell ss:Formula="=AVERAGE(Опрос!R2C6:R1001C6)"><Data ss:Type="Number">0</Data></Cell></Row>
+  </Table>
+ </Worksheet>
+</Workbook>
